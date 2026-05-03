@@ -1,0 +1,4 @@
+# Deny everything, then allow only what the build actually needs.
+*
+!Dockerfile
+!entrypoint.sh

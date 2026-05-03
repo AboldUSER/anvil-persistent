@@ -1,0 +1,25 @@
+# Per-developer overrides for docker compose.
+#
+# Usage:
+#   cp docker-compose.override.yml.example docker-compose.override.yml
+#   # edit the file as needed
+#   docker compose up -d
+#
+# Compose auto-merges docker-compose.override.yml on top of docker-compose.yml.
+# This file is gitignored, so your local tweaks won't be committed.
+#
+# Forwarded as: anvil --host 0.0.0.0 --state /data/anvil-state.json <YOUR FLAGS>
+# Don't override --host or --state — they are load-bearing for networking and persistence.
+
+services:
+  anvil:
+    command:
+      - --block-time
+      - "2"
+      # - --chain-id
+      # - "1337"
+      # - --mnemonic
+      # - "twelve word phrase goes here exactly as one quoted string"
+      # - --gas-limit
+      # - "60000000"
+      # - --silent
