@@ -20,7 +20,7 @@ State survives `docker compose stop && docker compose start` (graceful flush) an
 
 ## Customize
 
-To pass extra anvil flags (block time, chain ID, mnemonic, etc.), copy the example override and edit it:
+To pass extra anvil flags (block time, chain ID, mnemonic, etc.), copy the example override file and edit it, then run the container as normal:
 
 ```bash
 cp docker-compose.override.yml.example docker-compose.override.yml
@@ -28,7 +28,7 @@ cp docker-compose.override.yml.example docker-compose.override.yml
 docker compose up -d
 ```
 
-The file is gitignored, so local tweaks stay local. Tune `STATE_INTERVAL` (seconds, default `1800`) for a tighter dump cadence at the cost of more writes.
+Tune `STATE_INTERVAL` (seconds, default `1800`) for a tighter dump cadence at the cost of more writes.
 
 **Don't override `--host` or `--state`** — they're load-bearing for networking and persistence.
 
@@ -36,7 +36,7 @@ The file is gitignored, so local tweaks stay local. Tune `STATE_INTERVAL` (secon
 
 For most needs, anvil flags cover what a `genesis.json` would: `--chain-id`, `--mnemonic`, `--accounts <N>`, `--balance <ETHER>`, `--hardfork <name>`, `--gas-limit <N>`. Set these in your override `command:`.
 
-Anvil's CLI rejects `--init <genesis.json>` together with `--state` / `--dump-state`, so a `genesis.json` cannot be combined with the persistence flags directly. If you genuinely need one (e.g. to preload contract code or storage slots), bootstrap once *outside* this container, dump the result via the `anvil_dumpState` RPC, and place the JSON at `/data/anvil-state.json` in the volume — the normal `--state` flow takes over from there.
+Anvil's CLI rejects `--init <genesis.json>` or `--fork-url <rpc-url>` together with `--state`, so a `genesis.json` or fetching mainnet state cannot be combined with the persistence flags directly. If you need seeded state (e.g. precompile contract code or mainnet contracts), bootstrap once *outside* this container, dump the result via the `anvil_dumpState` RPC, and place the JSON at `/data/anvil-state.json` in the volume — the normal `--state` flow takes over from there.
 
 ## Wipe the chain
 
